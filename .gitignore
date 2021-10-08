@@ -103,3 +103,5 @@ dkms.conf
 .vscode/c_cpp_properties.json
 .vscode/settings.json
 c/practice/tempCodeRunnerFile.c
+c++/practice/oj/tempCodeRunnerFile.cpp
+.DS_Store
