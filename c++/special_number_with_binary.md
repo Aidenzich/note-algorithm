@@ -3,8 +3,8 @@
 > *A number is said to be special number when the sum of factorial of its digits is equal to the number itself.*
 ---
 ### Way of thinking
-- We observes that :
-    the Special values can be covert into :
+- We observe that :
+    the Special values can be converted into :
     $$
         base^n + base^{n-1} + ...+base^0
     $$
@@ -18,9 +18,9 @@
     |---|---|---|---|---|
     | k=12 | 1 | 1 | 0 | 0 |
     | k=13 | 1 | 1 | 0 | 1 |
-    - in c++, we can use ```(k & (1<<i))``` to find the position of biggest power of base
+    - in c++, you can use ```(k & (1<<i))``` to find the position of biggest power of base
         > `x & 1` produces a value that is either 1 or 0, depending on the least significant bit of `x`: if the last bit is 1, the result of `x & 1` is 1; otherwise, it is 0.
-    - e.g. When k =12, ```(k & (1<< i))``` will be true when `i=2` and `i=3`
+    - e.g. When k =12, ```(k & (1<< i))``` will be true if `i=2` and `i=3`
 - And 𝑘-th Special Number of base value can be calculate like:
     | *Power of base* | base^3 | base^2 | base^1 | base^0 |
     |---|---|---|---|---|
