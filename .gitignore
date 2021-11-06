@@ -102,8 +102,8 @@ dkms.conf
 !*.*
 .vscode/c_cpp_properties.json
 .vscode/settings.json
-c/practice/tempCodeRunnerFile.c
-c++/practice/oj/tempCodeRunnerFile.cpp
-.DS_Store
-c++/practice/leetcode/tempCodeRunnerFile.cpp
-c++/practice/codeforce/1594/tempCodeRunnerFile.cpp
+**/.DS_Store
+
+# ignore filename in all subfolders
+**/tempCodeRunnerFile.c
+**/tempCodeRunnerFile.cpp
