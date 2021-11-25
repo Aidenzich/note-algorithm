@@ -107,3 +107,4 @@ dkms.conf
 # ignore filename in all subfolders
 **/tempCodeRunnerFile.c
 **/tempCodeRunnerFile.cpp
+c/.vscode/settings.json
