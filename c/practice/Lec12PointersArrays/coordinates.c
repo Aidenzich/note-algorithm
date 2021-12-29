@@ -23,24 +23,22 @@ int main()
 
 void convert_to_polar(int *coords, int N)
 {
-    float test;
-    double temp = 0;    
-    for (int i=0; i < N*2; ++i){
+    double PI = 3.14159265359;
+    double DIR;
+    double DIST;
+    
+    // for (int *i=coords; i < coords+ N*2; i+=2){
+    for (int i=0; i< N*2; ++i){
         int x = *(coords+(i++));        
         int y = *(coords+i);
-        printf("%d %d\n", x, y);
-        
-        test = atan2(y, x) * 180 / 3.14159;
-        if (test < 0 ) test += 360;
-        printf("%.2f\n", test);
-    }
+        // int x = i[0], y=i[1];
 
-    
+        DIST = sqrt(pow(x, 2) + pow(y, 2));        
 
-    
-    // test = atan(temp) * 180 / 3.14159;
-    // printf("%d\n", N);
-    // printf("%d\n", coords[0]);
-    // test = atan(coords[0]);
-    
+        DIR = atan2(y, x)/ PI * 180 ;        
+                
+        if (DIR < 0 ) DIR += 360;
+
+        printf("%.2f %.2f\n", DIR, DIST);
+    }        
 }
