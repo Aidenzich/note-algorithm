@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h> 
 
-void swap(int* a, int* b){
+void swap(int* a, int* b) {
     int tmp = *a;
     *a = *b;
     *b = tmp;
@@ -36,14 +36,10 @@ void reverseArrayVertical(int** A, int m, int n){
     }
 }
 
-int **rightRotate(int**A, int m, int n, int time){
-    
-}
-
 
 int **transposeArray(int**A, int m, int n, int time){
     // Transpose Array
-    int **AT= (int**)malloc(sizeof(int*) *  n);
+    int **AT= (int**)malloc(sizeof(int*) * n);
     for (int i=0; i<n; ++i){
         AT[i] = (int*)malloc(sizeof(int)* m);
     }
@@ -53,21 +49,30 @@ int **transposeArray(int**A, int m, int n, int time){
             AT[j][i] = A[i][j];
         }
     }
+
     reverseArray(AT, n, m);
+
     printf("Transpose:\n");
     for (int i=0; i<n; ++i){
+
         for (int j=0; j<m; ++j){
-            printf("%d", AT[i][j]);
+            printf("%d ", AT[i][j]);
         }
+
         printf("\n");
     }
+
     if (time == 1){
+
         return AT;
+
     } else {
+
         time--;
         return transposeArray(AT, n, m, time);
-    }    
+    }
 }
+
 int main(){
     int m, n, i, j;
     scanf("%d %d", &m, &n);
@@ -89,7 +94,9 @@ int main(){
 
     for (i=0; i < operate_num; ++i){
         char op;
+        
         scanf("%s", &op);
+        
         if (op == 'r'){
             printf("旋轉\n");
             char dir;
@@ -98,12 +105,10 @@ int main(){
         }
 
         // printf("%d", strcmp(str, "r"));
-
-
     }
+    A = transposeArray(A, m, n, 5);
 
-
-    reverseArrayVertical(A, m, n);
+    // reverseArrayVertical(A, m, n);
     
     printf("\n");
     for (int i=0; i<m; ++i){
