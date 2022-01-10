@@ -12,7 +12,7 @@ int main() {
         size_t len = strlen(buf);
         if (len + P_len > MAX_LEN_P) {
         fprintf(stderr, "The length of the paragraph exceeds %d\n", MAX_LEN_P);
-        return 1;
+            return 1;
         }
         strncat(P, buf, len + 1);
         P_len += len;
@@ -32,26 +32,29 @@ void strins(char *P, char *s, char *t){
     char temp[MAX_LEN_P];
     
     // loop all char in p
-    for(int i=0; i<= pLen ;i++){
-        
+    for(int i=0; i<= pLen ;i++){        
         temp[pos++] =* (P+i);
         // count when P[] = S[]
-        if (*(P+i) == *(s+count)){
+        if (*(P+i) == *( s + count)){
+            
+            // printf("%c == %c\n", *(P+i), *(s + count));
+            
+            
             count++;
-            printf("%d", count);
-            printfs("%d", sLen);
-            if(count==sLen){
-                printf("here");
+
+            if(count == sLen){
                 strcat(temp, t);
                 pos += tLen;
                 count=0;
             }
         }
         else{
+            // printf("%c != %c\n", *(P+i), *(s + count));
             count = 0;
-        } 
-        
-        
+            if (*(P+i) == *(s+count)){
+                count++;
+            }
+        }                 
     }
 
     strcpy(P,temp);
