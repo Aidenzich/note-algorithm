@@ -28,8 +28,8 @@ int main(){
     }
 
     scanf("%d", &oper_num);
-
-    char c = getchar();
+    getchar();
+    char c ;
     
     for (int i = 0; i<oper_num; ++i){
         
