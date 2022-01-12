@@ -14,27 +14,22 @@ int main(){
     for (int i=0; i < studentNum; ++i){        
         scanf("%s", studentNames[i]);        
     }
-    // printf("cp");
-    // for (int i=0; i<studentNum; ++i){
-    //     printf("%c", *studentNames[i]);
-    // }
-
+    
+    // Sorting of a Set of Strings in Ascending alphabetical order
     for (int i =0; i<studentNum; i++){
         for (int j = i; j<studentNum; j++){
             char tempA[100], tempB[100];                
             for(int itr = 0; itr < 100; itr++){                    
                 tempA[itr] = tolower(studentNames[i][itr]);
                 tempB[itr] = tolower(studentNames[j][itr]);
-            }
-            // printf("%d\n", );
+            }            
             if (strcmp(tempA, tempB) > 0){
                 char tempC[100];
                 strcpy(tempC, studentNames[i]);
                 strcpy(studentNames[i], studentNames[j]);
                 strcpy(studentNames[j], tempC); 
-            }
-            // if (*studentNames[i] > *studentNames[j]){                                                                                
-            // }
+            }    
+    
         }
     }
 

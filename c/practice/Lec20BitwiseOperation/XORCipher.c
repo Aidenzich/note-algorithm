@@ -14,8 +14,8 @@ int main (){
         
         if (cipherKey[ck] == '\0') ck = 0;
         // printf("%c\n", cipherKey[ck]);
-        ch ^= cipherKey[ck];    
-        printf("%c", ch);        
+        ch ^= cipherKey[ck];
+        printf("%c", ch);
         ck++;
     }
     

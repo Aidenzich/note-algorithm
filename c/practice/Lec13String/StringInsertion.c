@@ -57,5 +57,5 @@ void strins(char *P, char *s, char *t){
         }                 
     }
 
-    strcpy(P,temp);
+    strcpy(P, temp);
 }
