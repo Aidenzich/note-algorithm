@@ -33,70 +33,86 @@ Location *parse_url(char *url)
 {
     static Location temp;
     
-    temp.protocol = malloc(5);
-    temp.host = malloc(100);
-    
-
+    temp.protocol = malloc(100);
+    temp.host = malloc(1000);
+    temp.hash = malloc(1000);
+    temp.search = malloc(1000);
+    temp.pathname = malloc(1000);
     int split1Count = 0;
+
+    char strArr[100][100];
+    
     char * split1 = strtok(url, "/");
     while (split1 != NULL ) {        
-        printf("%s\n", split1);
-        if (split1Count == 0){
-            char *tempSplit;
-            tempSplit = malloc(100);
-            strcpy(tempSplit, split1);
-            // printf("%s", tempSplit);
-            // printf("%s\n", tempSplit);
-
-            tempSplit = strtok(tempSplit, ":");
-            strcpy(temp.protocol, tempSplit);
-            
-            // strrep(temp.protocol, ":", "");            
-        }
-
-        if (split1Count == 1){
-            printf("%s\n", split1);
-            strcpy(temp.host, split1);            
-            // tempSplit = strtok(tempSplit, ":");
-            if (split1Count == 0){
-                // memset(split1, 0, sizeof(split1));
-            }
-        }
-
-        // printf("%s\n", split1);
+        strcpy(strArr[split1Count], split1);        
         split1 = strtok(NULL, "/");
         split1Count++;
     }
+    
+    char pathname[100] = {};
+    int pathCount = 0;
+    for (int i=0; i< split1Count; i++){
         
-    // char * pst;
-    // int pstCount = 0;
-    // pst = strtok(url, "/");
-    // while (pst != NULL){        
-    //     printf("%d %s\n", pstCount, pst);
-    //     pst = strtok(NULL, "/");
-    //     pstCount++;
-    // }
+        if (i==0){
+            // printf("proto: ");
+            split1 = strtok(strArr[i], ":");
+            // printf("%s\n", split1);
+            strcpy(temp.protocol, split1);
+        } 
+        else if (i==1){            
+            split1 = strtok(strArr[i], ":");
+            // printf("host: %s\n", split1);
+            if (split1[strlen(split1)-1] =='\n'){
+                split1[strlen(split1)-1] ='\0';
+            }
+            
+            strcpy(temp.host, split1);
+            
+            split1 = strtok(NULL, ":");
+            if (split1 != NULL){
+                temp.port = atoi(split1);
+            }
+            
+            // printf("port: %s\n", split1);
+        }  
+        else if (strchr(strArr[i], '?') != NULL){
+            // printf("?->%s\n", strArr[i]);
+            split1 = strtok(strArr[i], "?");
+            // printf("%s\n", split1);
+            if (pathCount > 0){
+                strcat(pathname, "/");
+            }
+            strcat(pathname, split1);
+            split1 = strtok(NULL, "?");
+            // printf("%s\n", split1);
 
-    char * pst2;
-    int pstCount2 = 0;
-    pst2 = strtok(url, "?");
-    while (pst2 != NULL){
-        if (pstCount2 == 1){
-            // char *search = malloc(100);
-            temp.search = malloc(100);                     
-            strcpy(temp.search, pst2);
+            // #
+            split1 = strtok(split1, "#");
+            if (split1 != NULL){
+                strcpy(temp.search, split1);
+            }
+            // printf("%s\n", split1);
+            
+            split1 = strtok(NULL, "#");
+            // printf("%s\n", split1);
+            if (split1 != NULL){
+                strcpy(temp.hash, split1);
+            }
+            
+        } else {
+            if (pathCount > 0){
+                strcat(pathname, "/");
+            }            
+            strcat(pathname, strArr[i]);
+            pathCount++;
         }
-        // printf("%d %s\n", pstCount2, pst2);
-        pst2 = strtok(NULL, "?");
-        pstCount2++;
     }
 
-
-
-    // strncpy(proto, url, 4);    
-    // temp->pathname = malloc(100);
-    // temp->pathname = proto;
-    // temp->pathname = malloc(1000);
-    // strcpy(temp->pathname, proto);
+    if (pathname[strlen(pathname)-1] == '\n'){
+        pathname[strlen(pathname)-1] ='\0';
+    }
+    
+    strcpy(temp.pathname, pathname);
+    // printf("path:::: %s\n", pathname);
     return &temp;
 }

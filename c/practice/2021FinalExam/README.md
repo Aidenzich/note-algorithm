@@ -92,3 +92,19 @@ printf("%s", temp);
     \\ cause `bus error`
     ```
 
+## String to int
+```c
+char str[10] = "122";
+int x = atoi(str);
+printf("Converting '122': %d\n", x);
+```
+
+## Find char in string
+```c
+if (strchr(split1, '?')!=NULL){
+    printf("?->%s\n", split1);
+}
+```
+- return 
+  - `NULL` if the specified character is not found
+  - a pointer to the first occurrence of char
