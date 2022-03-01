@@ -6,7 +6,7 @@
 #include <algorithm>
 
 using namespace std;
-const int MAX_N = 1001;
+const int MAX_N = 1001; // 10^3
 int N, M;
 
 vector<int> VECTOR_SPACE[MAX_N];
@@ -60,8 +60,7 @@ int main(){
     }
 
     for (int i=0; i<M; ++i){
-        // printf("%d\n", i);
-        
+        // printf("%d\n", i);        
         cin>> s1 >> a >> s2 >> b;
         int aX, bX, aY, bY;
         getCoordinates(a, aX, aY);
