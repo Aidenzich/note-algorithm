@@ -106,9 +106,11 @@ dkms.conf
 
 # ignore filename in all subfolders
 **/tempCodeRunnerFile.c
+*/tempCodeRunnerFile.py
 **/tempCodeRunnerFile.cpp
 c/.vscode/settings.json
 c/.vscode/tasks.json
 
+*/.ipynb_checkpoints
 
 .vscode
