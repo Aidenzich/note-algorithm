@@ -4,39 +4,68 @@
 
 using namespace std;
 
+int findmax(int left, int right, vector<int > stones){
+    int num = stones.size(), mx=0;
+    vector<int > rangeList;
+    // cout <<"\n" << "=============" << "\n";
+    // cout << left << ":" << right << "\n";
+    if (stones.size() == 0) {
+        mx = right - left;
+        rangeList.push_back(mx);
+    } else {
+        for (int i=0; i<stones.size(); ++i){
+            // cout << i << "\n";
+            if (i==0){
+                rangeList.push_back(stones[i] - left);
+            } else {
+                rangeList.push_back(stones[i] - stones[i-1]);            
+            };                
+        }
+        rangeList.push_back(right - stones.back());
+    }
+
+    for (int i=0; i< rangeList.size(); ++i){        
+        if (i+1 == rangeList.size()) break;
+        mx = max(mx, rangeList[i] + rangeList[i+1]);
+    }
+    
+    return mx;
+}
+
+
 int main(){
-    int n, x;
-    cin >> n;
+    int round, x;
+    cin >> round;
 
-    for (int i=0; i<n; ++i){
-        int r, l;
-        cin >> r >> l;
-
-        int mx = 0, cur_pos = 0;
-        // 青蛙會來回跳，因此剛才算的方式，只能找出
-        // 不考慮小石頭理論上的最大值，如果將小石頭算進來，
-        // 理論上最大值會更小
-
-        for (int j=0; j<r; ++j){
+    while (round--){        
+        vector<int > stones;
+        vector<int > rangeList;
+        int stoneNum, riverLength, mx=0, curPos=0;
+        cin >> stoneNum >> riverLength;
+        int left=0, right=0;
+        
+        
+        while (stoneNum--) {
             char size;
             int pos;
             cin >> size >> pos;
             
-            mx = max(mx, pos - cur_pos);
-            
-            cur_pos = pos;
-            cout << mx << "\n";
-
-            if (size == 'b'){
-                
-            } else {
-
+            if (size == 'b') {
+                if (right < pos){
+                    right = pos;
+                    mx = max(mx, findmax(left, right, stones));                                        
+                    stones = {};
+                    left = pos;
+                }
             }
-        
+            if (size == 's'){
+                stones.push_back(pos);
+            }
+            
         }
-
+        right = riverLength;
         
-        mx = max(mx, l - cur_pos);
-        cout << mx << "\n";
+        mx = max(mx, findmax(left, right, stones));
+        cout << mx <<"\n";        
     }
 }
