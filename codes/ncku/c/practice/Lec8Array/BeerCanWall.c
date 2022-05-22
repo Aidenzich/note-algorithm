@@ -5,7 +5,7 @@
 int main(){
     long long width;
     scanf("%lld", &width);
-    width = width/10;
+    width = width;
     long long arr[width];
     arr[0] = 1;
     arr[1] = 2;
