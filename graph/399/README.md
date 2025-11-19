@@ -10,13 +10,13 @@ Graph, DFS, Union Find
 
 ## Line of thought
 這題可以被建模成一個圖論問題 (Graph Problem)。
-我們可以將每一個變數視為圖中的一個節點 (Node)，而除法關係 `a / b = k` 則可以視為一條從 `a` 指向 `b` 的有向邊 (Directed Edge)，其權重 (Weight) 為 `k`。
-同時，因為 `a / b = k` 隱含了 `b / a = 1/k`，所以我們也需要建立一條從 `b` 指向 `a` 的邊，權重為 `1/k`。
+我們可以將每一個變數視為圖中的一個節點 (Node)，而除法關係 `a / b = k` 則可以視為一條從 `a` 指向 `b` 的有向邊 (Directed Edge)，其權重 (Weight) 為 `k`
+同時，因為 `a / b = k` 隱含了 `b / a = 1/k`，所以我們也需要建立一條從 `b` 指向 `a` 的邊，權重為 `1/k`
 
-當我們要求解 `x / y` 時，實際上就是在圖中尋找一條從節點 `x` 到節點 `y` 的路徑。
-如果路徑存在，則路徑上所有邊的權重乘積即為答案。
-例如：`a / b = 2.0`, `b / c = 3.0`，則 `a -> b` (2.0), `b -> c` (3.0)。
-求 `a / c` 即為 `a -> b -> c`，結果為 `2.0 * 3.0 = 6.0`。
+當我們要求解 `x / y` 時，實際上就是在圖中尋找一條從節點 `x` 到節點 `y` 的路徑
+如果路徑存在，則路徑上所有邊的權重乘積即為答案
+例如：`a / b = 2.0`, `b / c = 3.0`，則 `a -> b` (2.0), `b -> c` (3.0)
+求 `a / c` 即為 `a -> b -> c`，結果為 `2.0 * 3.0 = 6.0`
 
 具體實作上，我們可以使用 DFS (深度優先搜尋) 或 BFS (廣度優先搜尋) 來尋找路徑。
 為了避免在圖中無限循環，我們需要一個 `visited` 集合來記錄已經訪問過的節點。
@@ -27,7 +27,7 @@ Graph, DFS, Union Find
 3. 否則，從 `C` 開始進行 DFS/BFS 搜尋 `D`，並計算路徑權重積。如果找不到路徑，返回 `-1.0`。
 
 ## Solution
-### Time O(N * (V+E)), Space O(V+E)
+### Time $O(N * (V+E))$, Space $O(V+E)$
 其中 N 是 queries 的數量，V 是變數的數量，E 是 equations 的數量。
 每次 query 最壞情況下需要遍歷整個圖。
 
@@ -48,8 +48,10 @@ class Solution:
                 return graph[x][y]
             
             visited.add(x)
+            # Find out whether any neighborhood can reach y
             for neighbor, weight in graph[x].items():
                 if neighbor not in visited:
+                    
                     res = dfs(neighbor, y, visited)
                     if res != -1.0:
                         return weight * res
@@ -63,7 +65,7 @@ class Solution:
         return res
 ```
 
-### Union Find Solution. Time O((N+E) * log*(V)), Space O(V) 
+### Union Find Solution. Time $O((N+E) \times log(V))$, Space $O(V)$ 
 使用 Union Find 可以更快速地處理查詢，特別是當查詢數量很大時。
 我們需要維護每個節點到其根節點的倍率 (weight)。
 
@@ -71,51 +73,85 @@ class Solution:
 class Solution:
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
         parent = {}
-        weight = {} # weight[x] = x / parent[x]
+        weight = {}
 
-        def find(x):
+        def add(x):
             if x not in parent:
                 parent[x] = x
                 weight[x] = 1.0
-            
+        
+        def find(x):
             if parent[x] != x:
-                origin_parent = parent[x]
-                parent[x], w = find(parent[x])
-                weight[x] *= w
+                root, root_weight = find(parent[x])
+                weight[x] = weight[x] * root_weight
+                parent[x] = root
             
             return parent[x], weight[x]
 
-        def union(x, y, val):
-            rootX, wX = find(x)
-            rootY, wY = find(y)
-            
-            if rootX != rootY:
-                parent[rootX] = rootY
-                # x / y = val
-                # x = wX * rootX
-                # y = wY * rootY
-                # wX * rootX / (wY * rootY) = val
-                # rootX / rootY = val * wY / wX
-                weight[rootX] = val * wY / wX
 
-        # Build the graph
-        for (x, y), val in zip(equations, values):
-            union(x, y, val)
-            
+        def union(x, y, val):
+            add(x)
+            add(y)
+            root_x, w_x = find(x)
+            root_y, w_y = find(y)
+
+            if root_x != root_y:
+                parent[root_x] = root_y 
+                weight[root_x] = val * w_y / w_x
+
+        for (a, b), val in zip(equations, values):
+            union(a, b, val)
+
         res = []
         for x, y in queries:
             if x not in parent or y not in parent:
                 res.append(-1.0)
                 continue
-            
-            rootX, wX = find(x)
-            rootY, wY = find(y)
-            
-            if rootX != rootY:
+
+            root_x, w_x = find(x)
+            root_y, w_y = find(y)
+
+            if root_x != root_y:
                 res.append(-1.0)
             else:
-                # x / y = (x / rootX) / (y / rootY) = wX / wY
-                res.append(wX / wY)
-                
+                res.append(w_x / w_y)
+
         return res
 ```
+
+
+#### 證明 weight[root_x] = val * w_y / w_x 
+首先，我們要明確定義 `find` 函數回傳的值以及題目的輸入代表什麼物理意義：
+
+- **題目給定輸入**：
+    $$\frac{x}{y} = \text{val}$$
+
+- **`find(x)` 的結果**：
+    回傳 `(rootX, wX)`，其中 `wX` 代表 $x$ 相對於其根節點 `rootX` 的倍率：
+    $$\frac{x}{\text{rootX}} = wX$$
+
+- **`find(y)` 的結果**：
+    回傳 `(rootY, wY)`，其中 `wY` 代表 $y$ 相對於其根節點 `rootY` 的倍率：
+    $$\frac{y}{\text{rootY}} = wY$$
+- 現在，將第 1 步定義的已知條件代入以下公式：
+    $$
+    \frac{\text{rootX}}{\text{rootY}} = \frac{\text{rootX}}{x} \times \frac{x}{y} \times \frac{y}{\text{rootY}}
+    $$
+    
+    1.  因為 $\frac{x}{\text{rootX}} = wX$，所以倒過來：
+    $$\frac{\text{rootX}}{x} = \frac{1}{wX}$$
+
+    2.  題目已知：
+    $$\frac{x}{y} = \text{val}$$
+
+    3.  已知 `find(y)` 結果：
+    $$\frac{y}{\text{rootY}} = wY$$
+
+- 將這三項代回原式：
+    $$
+    \begin{aligned}
+    \frac{
+        \text{rootX}}{\text{rootY}} &= \left( \frac{1}{wX} \right) \times (\text{val}) \times (wY) \\[1em]
+    &= \text{val} \times \frac{wY}{wX}
+    \end{aligned}
+    $$
