@@ -63,7 +63,7 @@ class Solution:
         return res
 ```
 
-### Time O((N+E) * log*(V)), Space O(V) Union Find Solution
+### Union Find Solution. Time O((N+E) * log*(V)), Space O(V) 
 使用 Union Find 可以更快速地處理查詢，特別是當查詢數量很大時。
 我們需要維護每個節點到其根節點的倍率 (weight)。
 
